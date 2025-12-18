@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error Tracker - Browser Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .error {
+            color: red;
+        }
+        .success {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <h1>Error Tracker - Browser Example</h1>
+    
+    <div>
+        <h2>Test Error Tracking</h2>
+        <button onclick="testUnhandledError()">Trigger Unhandled Error</button>
+        <button onclick="testHandledError()">Trigger Handled Error</button>
+        <button onclick="testPromiseRejection()">Trigger Promise Rejection</button>
+        <button onclick="testMessage()">Capture Message</button>
+        <button onclick="testBreadcrumb()">Add Breadcrumb</button>
+    </div>
+
+    <div id="output"></div>
+
+    <script type="module">
+        import { BrowserErrorTracker, Severity, BreadcrumbType, BreadcrumbLevel } from '../../packages/js/dist/index.esm.js';
+
+        // Initialize error tracker
+        // In production, use your actual endpoint
+        const tracker = new BrowserErrorTracker({
+            dsn: 'console://', // Use console transport for demo
+            environment: 'development',
+            release: '1.0.0',
+        });
+
+        tracker.init();
+        tracker.setRequestFromPage();
+        tracker.setUser({ id: '123', email: 'user@example.com' });
+
+        // Make tracker available globally for button handlers
+        window.tracker = tracker;
+
+        function log(message, type = 'info') {
+            const output = document.getElementById('output');
+            const div = document.createElement('div');
+            div.className = type;
+            div.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            output.appendChild(div);
+        }
+
+        window.log = log;
+        log('Error tracker initialized', 'success');
+    </script>
+
+    <script>
+        function testUnhandledError() {
+            window.log('Triggering unhandled error...', 'error');
+            throw new Error('This is an unhandled error!');
+        }
+
+        function testHandledError() {
+            try {
+                throw new Error('This is a handled error!');
+            } catch (error) {
+                window.tracker.captureException(error);
+                window.log('Captured handled error', 'success');
+            }
+        }
+
+        function testPromiseRejection() {
+            window.log('Triggering promise rejection...', 'error');
+            Promise.reject(new Error('Unhandled promise rejection!'));
+        }
+
+        function testMessage() {
+            window.tracker.captureMessage('This is a test message', window.tracker.constructor.Severity?.INFO || 'info');
+            window.log('Captured message', 'success');
+        }
+
+        function testBreadcrumb() {
+            window.tracker.addBreadcrumb(
+                window.tracker.constructor.BreadcrumbType?.USER || 'user',
+                window.tracker.constructor.BreadcrumbLevel?.INFO || 'info',
+                'User clicked button',
+                'user.interaction'
+            );
+            window.log('Added breadcrumb', 'success');
+        }
+    </script>
+</body>
+</html>
+

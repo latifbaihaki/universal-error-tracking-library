@@ -1,0 +1,63 @@
+{
+  "name": "@error-tracker/js",
+  "version": "0.1.0",
+  "description": "JavaScript/TypeScript SDK for error tracking",
+  "main": "./dist/index.js",
+  "module": "./dist/index.esm.js",
+  "browser": "./dist/index.umd.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.esm.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./browser": {
+      "import": "./dist/browser.esm.js",
+      "require": "./dist/browser.js",
+      "types": "./dist/browser.d.ts"
+    },
+    "./node": {
+      "import": "./dist/node.esm.js",
+      "require": "./dist/node.js",
+      "types": "./dist/node.d.ts"
+    },
+    "./integrations/react": {
+      "import": "./dist/integrations/react.esm.js",
+      "require": "./dist/integrations/react.js",
+      "types": "./dist/integrations/react.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "npm run clean && npm run build:types && npm run build:esm && npm run build:cjs && npm run build:umd",
+    "build:types": "tsc --emitDeclarationOnly --outDir dist",
+    "build:esm": "esbuild src/index.ts --bundle --format=esm --outfile=dist/index.esm.js --external:@error-tracker/core --platform=browser --sourcemap",
+    "build:cjs": "esbuild src/index.ts --bundle --format=cjs --outfile=dist/index.js --external:@error-tracker/core --platform=node --sourcemap",
+    "build:umd": "esbuild src/index.ts --bundle --format=iife --global-name=ErrorTracker --outfile=dist/index.umd.js --external:@error-tracker/core --sourcemap",
+    "build:browser": "esbuild src/browser.ts --bundle --format=esm --outfile=dist/browser.esm.js --external:@error-tracker/core --sourcemap && esbuild src/browser.ts --bundle --format=cjs --outfile=dist/browser.js --external:@error-tracker/core --sourcemap",
+    "build:node": "esbuild src/node.ts --bundle --format=esm --outfile=dist/node.esm.js --external:@error-tracker/core --sourcemap && esbuild src/node.ts --bundle --format=cjs --outfile=dist/node.js --external:@error-tracker/core --sourcemap",
+    "clean": "node -e \"require('fs').rmSync('dist', {recursive: true, force: true})\" || exit 0",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "error-tracking",
+    "javascript",
+    "typescript",
+    "browser",
+    "nodejs"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@error-tracker/core": "file:../core"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "esbuild": "^0.19.8",
+    "rimraf": "^5.0.5",
+    "typescript": "^5.3.3"
+  }
+}
+

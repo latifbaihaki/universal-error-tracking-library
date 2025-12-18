@@ -1,0 +1,36 @@
+{
+  "name": "error-tracker",
+  "version": "0.1.0",
+  "description": "Universal Error Tracking & Analytics Library - Lightweight, flexible, and privacy-first",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces",
+    "test": "npm run test --workspaces",
+    "lint": "npm run lint --workspaces",
+    "clean": "npm run clean --workspaces && rimraf node_modules",
+    "publish:js": "cd packages/js && npm publish --access public",
+    "publish:python": "cd packages/python && python setup.py sdist bdist_wheel && twine upload dist/*"
+  },
+  "keywords": [
+    "error-tracking",
+    "error-monitoring",
+    "exception-tracking",
+    "analytics",
+    "logging",
+    "debugging"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "rimraf": "^5.0.5",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
+

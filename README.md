@@ -56,7 +56,7 @@ This library solves all of that. It's:
 
 ## Installation
 
-Instalasi melalui package manager (npm, pip, atau lainnya) mungkin akan ditambahkan di masa depan. Untuk saat ini, silakan clone repository ini dan gunakan langsung dari source code.
+Installation via package managers (npm, pip, or others) may be added in the future. For now, please clone this repository and use it directly from the source code.
 
 ## Quick Start
 

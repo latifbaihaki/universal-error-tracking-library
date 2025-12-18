@@ -56,21 +56,7 @@ This library solves all of that. It's:
 
 ## Installation
 
-### JavaScript/TypeScript
-
-```bash
-npm install @error-tracker/js
-# or
-yarn add @error-tracker/js
-# or
-pnpm add @error-tracker/js
-```
-
-### Python
-
-```bash
-pip install error-tracker-python
-```
+Instalasi melalui package manager (npm, pip, atau lainnya) mungkin akan ditambahkan di masa depan. Untuk saat ini, silakan clone repository ini dan gunakan langsung dari source code.
 
 ## Quick Start
 
